@@ -1,0 +1,15 @@
+{
+  "name": "inline-all-styles",
+  "version": "1.0.0",
+  "description": "A Javascript utility for converting computed styles to inline styles",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "author": "Imogen Hardy (imogen.hardy@gmail.com)",
+  "license": "ISC"
+}
