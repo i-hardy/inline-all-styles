@@ -1,16 +1,20 @@
+const prefix = {
+  xmlns: 'http://www.w3.org/2000/xmlns/',
+  xlink: 'http://www.w3.org/1999/xlink',
+  svg: 'http://www.w3.org/2000/svg',
+};
+
+let emptySvg;
+
 function getComparisonSvg() {
-  const emptySvg = window.document.createElementNS(prefix.svg, 'svg');
+  emptySvg = window.document.createElementNS(prefix.svg, 'svg');
   window.document.body.appendChild(emptySvg);
-  const emptySvgComputed = getComputedStyle(emptySvg);
-  emptySvg.remove();
-  return emptySvgComputed;
+  return getComputedStyle(emptySvg);
 }
 
 function explicitlySetStyle(element) {
   const blankSvgStyles = getComparisonSvg();
   const elementStyleComputed = getComputedStyle(element);
-  // let key;
-  // let value;
   let computedStyleStr = '';
   for (let i = 0; i < elementStyleComputed.length; i++) {
     const key = elementStyleComputed.item(i);
@@ -20,6 +24,7 @@ function explicitlySetStyle(element) {
     }
   }
   element.setAttribute('style', computedStyleStr);
+  emptySvg.remove();
 }
 
 function traverse(obj) {
@@ -42,18 +47,13 @@ function traverse(obj) {
 }
 
 export default {
-  set(svg) {
-    const prefix = {
-      xmlns: 'http://www.w3.org/2000/xmlns/',
-      xlink: 'http://www.w3.org/1999/xlink',
-      svg: 'http://www.w3.org/2000/svg',
-    };
+  bundle(svg) {
     const allElements = traverse(svg);
     allElements.forEach((node) => {
       explicitlySetStyle(node);
     });
   },
-  unset(svg) {
+  unbundle(svg) {
     const allElements = traverse(svg);
     allElements.forEach((node) => {
       node.setAttribute('style', '');
