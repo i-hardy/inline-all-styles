@@ -6,6 +6,14 @@ Inspired by the New York Times's excellent [SVG Crowbar](http://nytimes.github.i
 
 ## Installation
 
+### CDN
+
+Include this script on your page
+
+```html
+<script src="https://unpkg.com/svg-style-bundler"></script>
+```
+
 ### npm/yarn
 
 ```bash

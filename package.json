@@ -1,13 +1,20 @@
 {
   "name": "svg-style-bundler",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Javascript utility for converting an SVG's computed styles to inline styles",
-  "main": "index.js",
-  "unpkg": "index.js",
+  "main": "dist/bundle.min.js",
+  "unpkg": "dist/bundle.min.js",
   "scripts": {
+    "build": "bump --prompt",
+    "postversion": "webpack --mode production",
     "test": "test"
   },
-  "keywords": ["svg", "css", "computed styles"],
+  "keywords": [
+    "svg",
+    "css",
+    "inline styles",
+    "computed styles"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/i-hardy/svg-style-bundler"
@@ -16,5 +23,11 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/i-hardy/svg-style-bundler/issues"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14"
   }
 }

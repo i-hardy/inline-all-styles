@@ -1,20 +1,20 @@
 const nodeTraverser = {
   tree: [],
-  visit(node) {
+  traverseChildren(node) {
     if (node && node.hasChildNodes()) {
       let child = node.firstChild;
       while (child) {
         if (child.nodeType === 1 && child.nodeName !== 'SCRIPT') {
           nodeTraverser.tree.push(child);
-          nodeTraverser.visit(child);
+          nodeTraverser.traverseChildren(child);
         }
         child = child.nextSibling;
       }
     }
   },
-  traverse(obj) {
-    nodeTraverser.tree.push(obj);
-    nodeTraverser.visit(obj);
+  traverse(node) {
+    nodeTraverser.tree.push(node);
+    nodeTraverser.traverseChildren(node);
     return nodeTraverser.tree;
   },
 };
@@ -26,7 +26,7 @@ const styleSetter = {
     window.document.body.appendChild(styleSetter.emptySvg);
     return getComputedStyle(styleSetter.emptySvg);
   },
-  explicitlySetStyle(element) {
+  setStyle(element) {
     const blankSvgStyles = styleSetter.getComparisonSvg();
     const elementStyleComputed = getComputedStyle(element);
     let computedStyleStr = '';
@@ -47,11 +47,11 @@ export default {
     const allElements = nodeTraverser.traverse(svg);
     allElements.forEach((node) => {
       node.setAttribute('data-old-style', node.style);
-      styleSetter.explicitlySetStyle(node);
+      styleSetter.setStyle(node);
     });
   },
   unbundle(svg) {
-    const allElements = traverse(svg);
+    const allElements = nodeTraverser.traverse(svg);
     allElements.forEach((node) => {
       const oldStyle = node.getAttribute('data-old-style');
       node.setAttribute('style', oldStyle);
