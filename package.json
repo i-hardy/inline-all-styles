@@ -1,19 +1,19 @@
 {
-  "name": "inline-all-styles",
+  "name": "svg-style-bundler",
   "version": "1.0.0",
-  "description": "A Javascript utility for converting computed styles to inline styles",
-  "main": "dist/svg-style-bundler.min.js",
-  "unpkg": "dist/svg-style-bundler.min.js",
+  "description": "A Javascript utility for converting an SVG's computed styles to inline styles",
+  "main": "index.js",
+  "unpkg": "index.js",
   "scripts": {
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/i-hardy/inline-all-styles"
+    "url": "git+https://github.com/i-hardy/svg-style-bundler"
   },
   "author": "Imogen Hardy (imogen.hardy@gmail.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/i-hardy/inline-all-styles/issues"
+    "url": "https://github.com/i-hardy/svg-style-bundler/issues"
   }
 }
