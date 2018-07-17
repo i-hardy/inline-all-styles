@@ -1,6 +1,6 @@
 const nodeTraverser = {
   tree: [],
-  traverseChildren(node) {
+  traverseChildren: function (node) {
     if (node && node.hasChildNodes()) {
       let child = node.firstChild;
       while (child) {
@@ -12,7 +12,7 @@ const nodeTraverser = {
       }
     }
   },
-  traverse(node) {
+  traverse: function (node) {
     nodeTraverser.tree.push(node);
     nodeTraverser.traverseChildren(node);
     return nodeTraverser.tree;
@@ -21,12 +21,12 @@ const nodeTraverser = {
 
 const styleSetter = {
   emptySvg: null,
-  getComparisonSvg() {
+  getComparisonSvg: function () {
     styleSetter.emptySvg = window.document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     window.document.body.appendChild(styleSetter.emptySvg);
     return getComputedStyle(styleSetter.emptySvg);
   },
-  setStyle(element) {
+  setStyle: function (element) {
     const blankSvgStyles = styleSetter.getComparisonSvg();
     const elementStyleComputed = getComputedStyle(element);
     let computedStyleStr = '';
@@ -43,14 +43,14 @@ const styleSetter = {
 };
 
 export default {
-  bundle(svg) {
+  bundle: function (svg) {
     const allElements = nodeTraverser.traverse(svg);
     allElements.forEach((node) => {
       node.setAttribute('data-old-style', node.style);
       styleSetter.setStyle(node);
     });
   },
-  unbundle(svg) {
+  unbundle: function (svg) {
     const allElements = nodeTraverser.traverse(svg);
     allElements.forEach((node) => {
       const oldStyle = node.getAttribute('data-old-style');
