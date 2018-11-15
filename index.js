@@ -1,60 +1,39 @@
-const nodeTraverser = {
-  tree: [],
-  traverseChildren: function (node) {
-    if (node && node.hasChildNodes()) {
-      let child = node.firstChild;
-      while (child) {
-        if (child.nodeType === 1 && child.nodeName !== 'SCRIPT') {
-          nodeTraverser.tree.push(child);
-          nodeTraverser.traverseChildren(child);
-        }
-        child = child.nextSibling;
-      }
-    }
-  },
-  traverse: function (node) {
-    nodeTraverser.tree.push(node);
-    nodeTraverser.traverseChildren(node);
-    return nodeTraverser.tree;
-  },
-};
+let emptySvg;
 
-const styleSetter = {
-  emptySvg: null,
-  getComparisonSvg: function () {
-    styleSetter.emptySvg = window.document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    window.document.body.appendChild(styleSetter.emptySvg);
-    return getComputedStyle(styleSetter.emptySvg);
-  },
-  setStyle: function (element) {
-    const blankSvgStyles = styleSetter.getComparisonSvg();
-    const elementStyleComputed = getComputedStyle(element);
-    let computedStyleStr = '';
-    for (let i = 0; i < elementStyleComputed.length; i++) {
-      const key = elementStyleComputed.item(i);
-      const value = elementStyleComputed.getPropertyValue(key);
-      if (value !== blankSvgStyles.getPropertyValue(key)) {
-        computedStyleStr += `${key}:${value};`;
-      }
+function getComparisonSvg() {
+  emptySvg = window.document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  window.document.body.appendChild(emptySvg);
+  return getComputedStyle(emptySvg);
+}
+
+function setStyle(element) {
+  const blankSvgStyles = getComparisonSvg();
+  const elementStyleComputed = getComputedStyle(element);
+  let computedStyleStr = '';
+  for (let i = 0; i < elementStyleComputed.length; i++) {
+    const key = elementStyleComputed.item(i);
+    const value = elementStyleComputed.getPropertyValue(key);
+    if (value !== blankSvgStyles.getPropertyValue(key)) {
+      computedStyleStr += `${key}:${value};`;
     }
-    element.setAttribute('style', computedStyleStr);
-    styleSetter.emptySvg.remove();
-  },
-};
+  }
+  element.setAttribute('style', computedStyleStr);
+  emptySvg.remove();
+}
 
 export default {
-  bundle: function (svg) {
-    const allElements = nodeTraverser.traverse(svg);
-    allElements.forEach((node) => {
-      node.setAttribute('data-old-style', node.style);
-      styleSetter.setStyle(node);
-    });
-  },
-  unbundle: function (svg) {
-    const allElements = nodeTraverser.traverse(svg);
-    allElements.forEach((node) => {
-      const oldStyle = node.getAttribute('data-old-style');
-      node.setAttribute('style', oldStyle);
-    });
+  bundle(svg) {
+    const treeWalker = document.createTreeWalker(
+      svg,
+      NodeFilter.SHOW_ELEMENT,
+      {
+        acceptNode: () => NodeFilter.FILTER_ACCEPT,
+      },
+      false,
+    );
+
+    do {
+      setStyle(treeWalker.currentNode);
+    } while (treeWalker.nextNode());
   },
 };
